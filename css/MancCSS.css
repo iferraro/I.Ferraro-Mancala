@@ -1,0 +1,39 @@
+body {
+    background-color: black;
+}
+#gameBoard {
+    margin: 175px auto 0 auto;
+    text-align: center;
+    background-color: blueviolet;
+}
+#compStore, #playerStore {
+    display: inline-block;
+    width: 125px;
+    height: 270px;
+    margin: 0 9px;
+    background-color: black;
+    /* border-radius: 50vw; */
+
+}
+#compStore {
+    background-color: orange;
+}
+#playerStore {
+    background-color: darkblue;
+}
+#one, #two, #three, #four, #five, #six, #seven, #eight, #nine, #ten, #eleven, #twelve {
+    display: inline-block;
+    width: 125px;
+    height: 125px;
+    /* background-color: blue; */
+    /* border-radius: 50vh; */
+    margin: 0 9px;
+}
+#one, #two, #three, #four, #five, #six {
+    background-color: blue;
+}
+#seven, #eight, #nine, #ten, #eleven, #twelve {
+    position: relative;
+    bottom: 274px;
+    background-color: yellow;
+}
