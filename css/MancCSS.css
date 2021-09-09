@@ -6,14 +6,13 @@ body {
     text-align: center;
     background-color: blueviolet;
 }
-#compStore, #playerStore {
+.store {
     display: inline-block;
     width: 125px;
     height: 270px;
-    margin: 0 9px;
     background-color: black;
-    /* border-radius: 50vw; */
-
+    border: 0;
+    border-radius: 0;
 }
 #compStore {
     background-color: orange;
@@ -21,19 +20,15 @@ body {
 #playerStore {
     background-color: darkblue;
 }
-#one, #two, #three, #four, #five, #six, #seven, #eight, #nine, #ten, #eleven, #twelve {
+.pit {
     display: inline-block;
     width: 125px;
     height: 125px;
     /* background-color: blue; */
-    /* border-radius: 50vh; */
-    margin: 0 9px;
+    border: 0;
+    border-radius: 0;
 }
-#one, #two, #three, #four, #five, #six {
-    background-color: blue;
-}
-#seven, #eight, #nine, #ten, #eleven, #twelve {
-    position: relative;
-    bottom: 274px;
-    background-color: yellow;
+#topRow {
+    bottom: 200px;
+    background-color: cadetblue;
 }
