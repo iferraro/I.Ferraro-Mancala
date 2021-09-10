@@ -1,34 +1,57 @@
 body {
     background-color: black;
+    margin: 0;
+    text-align: center;
+}
+header {
+    text-align: center;
+    color: white;
+}
+h1 {
+    font-size: 100px;
 }
 #gameBoard {
-    margin: 175px auto 0 auto;
+    display: flex;
+    justify-content: center;
+    margin: 125px auto 0 auto;
     text-align: center;
-    background-color: blueviolet;
+    /* background-color: peru; */
 }
 .store {
-    display: inline-block;
     width: 125px;
     height: 270px;
-    background-color: black;
+    background-color: white;
     border: 0;
-    border-radius: 0;
+    border-radius: 30px;
+    margin: 10px;
 }
-#compStore {
+/* #compStore {
     background-color: orange;
 }
 #playerStore {
     background-color: darkblue;
-}
+} */
 .pit {
-    display: inline-block;
     width: 125px;
     height: 125px;
-    /* background-color: blue; */
+    background-color: white;
     border: 0;
-    border-radius: 0;
+    border-radius: 30px;
+    margin: 10px;
 }
-#topRow {
-    bottom: 200px;
-    background-color: cadetblue;
+/* #seven {
+    height: 175px;
+} */
+/* #one {
+    height: 175px;
+} */
+#reset {
+    margin: 100px 0 0 0;
+    width: 270px;
+    height: 60px;
+    border: 0;
+    border-radius: 50vh;
+    text-align: center;
+    background-color: white;
 }
+

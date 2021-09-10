@@ -4,29 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Isaac's Mancala</title>
     <link defer href = "css/MancCSS.css" rel = "stylesheet" type ="text/css">
     <script defer src = "js/MancJS.js"></script>
 </head>
 <body>
+    <header>
+        <h1>MANCALA</h1>
+    </header>
     <div id="gameBoard">
-        <button class="store" id="compStore">Computer</button>
-        <button class="pit" id="1">1</button>
-        <button class="pit" id="2">2</button>
-        <button class="pit" id="3">3</button>
-        <button class="pit" id="4">4</button>
-        <button class="pit" id="5">5</button>
-        <button class="pit" id="6">6</button>                   
-        <button class="store" id="playerStore">Player</button>
+        <button class="store" id="compStore"><br><h3 id="cScore"></h3></button>
+        <aside id="col1">
+            <button class="pit" id="one">1</button>
+            <br>
+            <button class="pit" id="seven">7</button>
+        </aside>
+        <aside id="col2">
+            <button class="pit" id="two">2</button>
+            <br>
+            <button class="pit" id="eight">8</button>
+        </aside>
+        <aside id="col3">
+            <button class="pit" id="three">3</button>
+            <br>
+            <button class="pit" id="nine">9</button>
+        </aside>
+        <aside id="col4">
+            <button class="pit" id="four">4</button>
+            <br>
+            <button class="pit" id="ten">10</button>
+        </aside>
+        <aside id="col5">
+            <button class="pit" id="five">5</button>
+            <br>
+            <button class="pit" id="eleven">11</button>
+        </aside>
+        <aside id="col6">
+            <button class="pit" id="six">6</button>
+            <br>
+            <button class="pit" id="twelve">12</button>
+        </aside>
+        <button class="store" id="playerStore"><br><h3 id="pScore"></h3></button>
         <br>
-        <div id="topRow">
-            <button class="pit" id="12">12</button>
-            <button class="pit" id="11">11</button>
-            <button class="pit" id="10">10</button>
-            <button class="pit" id="9">9</button>
-            <button class="pit" id="8">8</button>
-            <button class="pit" id="7">7</button> 
-        </div>
+    </div>
+    <div id="footer">
+        <button id="reset">Reset</button>
     </div>
 </body>
 </html>
