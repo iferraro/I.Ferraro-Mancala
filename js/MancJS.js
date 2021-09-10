@@ -1,16 +1,30 @@
 const player = {
     store: document.querySelector("#playerStore"),
-    score: Number(document.querySelector("#pScore").innerText)
+    score: 0
 }
 const computer = {
     store: document.querySelector("computerStore"),
-    score: Number(document.querySelector("#cScore").innerText)
+    score: 0
 }
 
-// player.store.addEventListener("click", function() {
-//     this.style.backgroundColor = "red";
-//     this.innerText = player.score;
-//     player.score++;
-// });
+function render() {
+// updates model
+}
+
+function reset() {
+// resets everything; scores to 0, each pit has four stones
+}
+
+function advance() {
+// player or computer picks up stones and continues collecting and dropping into pits unitl their turn is done
+}
+
+function storeCount() {
+// returns sum of stores. if 48, then game is over.
+}
+
+//hover mouse functions for pits
+
+
 
 

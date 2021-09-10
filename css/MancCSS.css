@@ -9,10 +9,12 @@ header {
 }
 h1 {
     font-size: 100px;
+    /* background-color: brown; */
 }
 #gameBoard {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 125px auto 0 auto;
     text-align: center;
     /* background-color: peru; */
@@ -40,9 +42,9 @@ h1 {
     margin: 10px;
 }
 /* #seven {
-    height: 175px;
-} */
-/* #one {
+    height: 75px;
+}
+#one {
     height: 175px;
 } */
 #reset {
