@@ -9,15 +9,28 @@ header {
 }
 h1 {
     font-size: 100px;
+    margin-bottom: 0;
     /* background-color: brown; */
 }
 #gameBoard {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 125px auto 0 auto;
+    margin-top: 25px;
     text-align: center;
     /* background-color: peru; */
+}
+#topRow, #bottomRow {
+    display: flex;
+    height: 195px;
+}
+#topRow {
+    align-items: flex-end;
+    /* background-color: chartreuse; */
+}
+#bottomRow {
+    align-items: flex-start;
+    /* background-color: darkslategrey; */
 }
 .store {
     width: 125px;
@@ -42,13 +55,13 @@ h1 {
     margin: 10px;
 }
 /* #seven {
-    height: 75px;
-}
-#one {
+    height: 125px;
+} */
+/* #one {
     height: 175px;
 } */
 #reset {
-    margin: 100px 0 0 0;
+    margin-top: 75px;
     width: 270px;
     height: 60px;
     border: 0;
