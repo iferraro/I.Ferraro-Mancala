@@ -28,9 +28,15 @@ h1 {
     align-items: flex-end;
     /* background-color: chartreuse; */
 }
+#topRow button, #compStore {
+    background-color: coral;
+}
 #bottomRow {
     align-items: flex-start;
     /* background-color: darkslategrey; */
+}
+#bottomRow button, #playerStore {
+    background-color: darkorange;
 }
 .store {
     width: 125px;
