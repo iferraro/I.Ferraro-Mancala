@@ -19,10 +19,12 @@ const sequence = [
     document.querySelector("#seven"),
     stores.computer
 ]
+
 /*----- app's state (variables) -----*/
 let scores;
 // let playerTurn;
 // let computerTurn;
+
 /*----- cached element references -----*/
 const pits = {
     one: sequence[0],
@@ -88,6 +90,7 @@ const availableToComputer = [
 
 const playerSide = availableToPlayer.slice(0, 6);
 const computerSide = availableToComputer.slice(6, 12);
+
 /*----- event listeners -----*/
 const allPits = document.querySelectorAll(".pit");
 allPits.forEach(function(pit) {
@@ -145,7 +148,14 @@ function render() {
         // playerTurn = false;
         // computerTurn = false;
     }
+    for (let pit in pits) {
+        if (Number(pits[pit].innerText) === 0) {
+            pits[pit].style.backgroundColor = "darkslategrey";
+        }
+    }
 }
+
+// if pit.innerText !== 0, allow player/computer to choose it to go
 
 function playerDist(pit) {
     let stonesInHand = pit.innerText;
@@ -162,12 +172,20 @@ function playerDist(pit) {
     let finalPit = availableToPlayer[pitInd-1];
     finalPit.style.backgroundColor = "green";
     if (finalPit.innerText === 1 && playerSide.includes(finalPit)) {
-        stores.player.innerText += finalPit.innerText;
-        finalPit.innerText = 0;
-        stores.player.innerText += pitOpposites[finalPit].innerText;
-        pitOpposites[finalPit].innerText = 0;
+        merge(finalPit, stores.player);
     }
+    // other conditions for ending turn
     render(); 
+}
+
+function merge(pit, store) {
+    store.innerText += pit;
+    pit.innerText = 0;
+    store.innerText += pitOpposites[pit].innerText;        
+    pitOpposites[pit].innerText = 0;
+}
+function computerMerge() {
+
 }
 
 pits.three.addEventListener("click", playerDist(pits.three));

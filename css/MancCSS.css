@@ -41,14 +41,14 @@ h1 {
     /* background-color: chartreuse; */
 }
 #topRow button, #compStore {
-    background-color: coral;
+    /* background-color: coral; */
 }
 #bottomRow {
     align-items: flex-start;
     /* background-color: darkslategrey; */
 }
 #bottomRow button, #playerStore {
-    background-color: darkorange;
+    /* background-color: darkorange; */
 }
 .store {
     width: 125px;
