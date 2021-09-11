@@ -78,8 +78,15 @@ h1 {
 /* #one {
     height: 175px;
 } */
+#footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    margin-top: 70px;
+
+}
 #reset {
-    margin-top: 75px;
     width: 270px;
     height: 60px;
     border: 0;
