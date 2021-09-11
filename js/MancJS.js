@@ -1,46 +1,93 @@
 /*----- constants -----*/
-
 const stores = {
     player: document.querySelector("#playerStore"),
     computer: document.querySelector("#compStore")
 }
-
+const sequence = [
+    document.querySelector("#one"),
+    document.querySelector("#two"),
+    document.querySelector("#three"),
+    document.querySelector("#four"),
+    document.querySelector("#five"),
+    document.querySelector("#six"),
+    stores.player,
+    document.querySelector("#twelve"),
+    document.querySelector("#eleven"),
+    document.querySelector("#ten"),
+    document.querySelector("#nine"),
+    document.querySelector("#eight"),
+    document.querySelector("#seven"),
+    stores.computer
+]
+/*----- app's state (variables) -----*/
+let scores;
+// let playerTurn;
+// let computerTurn;
+/*----- cached element references -----*/
 const pits = {
-    one: document.querySelector("#one"),
-    two: document.querySelector("#two"),
-    three: document.querySelector("#three"),
-    four: document.querySelector("#four"),
-    five: document.querySelector("#five"),
-    six: document.querySelector("#six"),
-    seven: document.querySelector("#seven"),
-    eight: document.querySelector("#eight"),
-    nine: document.querySelector("#nine"),
-    ten: document.querySelector("#ten"),
-    eleven: document.querySelector("#eleven"),
-    twelve: document.querySelector("#twelve")
+    one: sequence[0],
+    two: sequence[1],
+    three: sequence[2],
+    four: sequence[3],
+    five: sequence[4],
+    six: sequence[5],
+    seven: sequence[12],
+    eight: sequence[11],
+    nine: sequence[10],
+    ten: sequence[9],
+    eleven: sequence[8],
+    twelve: sequence[7]
 }
 
 const pitOpposites = {
-    one: document.querySelector("#seven"),
-    two: document.querySelector("#eight"),
-    three: document.querySelector("#nine"),
-    four: document.querySelector("#ten"),
-    five: document.querySelector("#eleven"),
-    six: document.querySelector("#twelve"),
-    seven: document.querySelector("#one"),
-    eight: document.querySelector("#two"),
-    nine: document.querySelector("#three"),
-    ten: document.querySelector("#four"),
-    eleven: document.querySelector("#five"),
-    twelve: document.querySelector("#six")  
+    one: pits.seven,
+    two: pits.eight,
+    three: pits.nine,
+    four: pits.ten,
+    five: pits.eleven,
+    six: pits.twelve,
+    seven: pits.one,
+    eight: pits.two,
+    nine: pits.three,
+    ten: pits.four,
+    eleven: pits.five,
+    twelve: pits.six
 }
 
-const[]
-/*----- app's state (variables) -----*/
-let scores;
-let playerTurn;
-let computerTurn;
-/*----- cached element references -----*/
+const availableToPlayer = [
+    pits.one, 
+    pits.two, 
+    pits.three,
+    pits.four,
+    pits.five,
+    pits.six,
+    stores.player,
+    pits.twelve,
+    pits.eleven,
+    pits.ten,
+    pits.nine,
+    pits.eight,
+    pits.seven,
+]
+
+const availableToComputer = [
+    pits.one, 
+    pits.two, 
+    pits.three,
+    pits.four,
+    pits.five,
+    pits.six,
+    pits.twelve,
+    pits.eleven,
+    pits.ten,
+    pits.nine,
+    pits.eight,
+    pits.seven,
+    stores.computer,
+]
+
+const playerSide = availableToPlayer.slice(0, 6);
+const computerSide = availableToComputer.slice(6, 12);
 /*----- event listeners -----*/
 let allPits = document.querySelectorAll(".pit");
 allPits.forEach(function(pit) {
@@ -60,35 +107,69 @@ resetButton.addEventListener("click", function() {
 /*----- functions -----*/
 init();
 function init() {
-    scores = {
-        player: 0,
-        computer: 0
-    }
+    // scores = {
+    //     player: 0,
+    //     computer: 0
+    // }
+    stores.player.innerText = 0;
+    stores.computer.innerText = 0;
     for (let pit in pits) {
         pits[pit].innerText = 4;
     }
-    playerTurn = true;
-    computerTurn = false;
+    winner = null;
+    // playerTurn = true;
+    // computerTurn = false;
     render(); 
 }
 
 function render() {
-    stores.player.innerText = scores.player;
-    stores.computer.innerText = scores.computer;
-    endCheck();
-}
-
-function advance(player) {
-// player or computer picks up stones and continues collecting and dropping into pits unitl their turn is done
-
-}
-
-function endCheck() {
     if (stores.player.innerText + stores.computer.innerText === 48) {
-        playerTurn = false;
-        computerTurn = false;
+        if (stores.player.innerText > stores.computer.innerText) {
+            winner = "Player";
+        } else if (stores.player.innerText < stores.computer.innerText) {
+            winner = "Computer";
+        } else {
+            winner = "Tie";
+        }
+        // console.log()
+        // playerTurn = false;
+        // computerTurn = false;
     }
-// returns sum of stores. if 48, then game is over.
 }
+
+function playerDist(pit) {
+    let stonesinHand = pit.innerText;
+    let pitInd = availableToPlayer.indexOf(pit) + 1;
+    pit.innerText = 0;
+    while (stonesinHand > 0) {
+        availableToPlayer[pitInd].innerText++;
+        stonesinHand--;
+        if (pitInd > 12) {
+            pitInd = 0;
+        }
+        pitInd++;
+    } 
+    let finalPit = availableToPlayer[pitInd-1];
+    finalPit.style.backgroundColor = "green";
+    if (finalPit.innerText === 1 && playerSide.includes(finalPit)) {
+        stores.player.innerText += finalPit.innerText;
+        finalPit.innerText = 0;
+        stores.player.innerText += pitOpposites[finalPit].innerText;
+        pitOpposites[finalPit].innerText = 0;
+    }
+    render(); 
+}
+
+pits.three.addEventListener("click", playerDist(pits.three));
+
+function advance(player, pit) {
+    let inHand = pit.innerText;
+    while (inHand > 0) {
+
+    }
+    render();
+// player or computer picks up stones and continues collecting and dropping into pits unitl their turn is done
+}
+// returns sum of stores. if 48, then game is over.
 
 
