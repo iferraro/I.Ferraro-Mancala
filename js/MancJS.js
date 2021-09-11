@@ -1,15 +1,4 @@
 /*----- constants -----*/
-const stores = {
-    player: document.querySelector("#playerStore"),
-    computer: document.querySelector("#compStore")
-}
-
-/*----- app's state (variables) -----*/
-let scores;
-// let playerTurn;
-// let computerTurn;
-
-/*----- cached element references -----*/
 const pits = {
     one: document.querySelector("#one"),
     two: document.querySelector("#two"),
@@ -40,40 +29,51 @@ const pitOpposites = {
     twelve: pits.six
 }
 
-const availableToPlayer = [
-    pits.one, 
-    pits.two, 
-    pits.three,
-    pits.four,
-    pits.five,
-    pits.six,
-    stores.player,
-    pits.twelve,
-    pits.eleven,
-    pits.ten,
-    pits.nine,
-    pits.eight,
-    pits.seven,
-]
+const player = {
+    store: document.querySelector("#playerStore"),
+    route: [
+        pits.one, 
+        pits.two, 
+        pits.three,
+        pits.four,
+        pits.five,
+        pits.six,
+        this.store,
+        pits.twelve,
+        pits.eleven,
+        pits.ten,
+        pits.nine,
+        pits.eight,
+        pits.seven,
+    ],
+    side: this.route.slice(0, 6)
+}
+const computer = {
+    store: document.querySelector("#compStore"),
+    route: [
+        pits.one, 
+        pits.two, 
+        pits.three,
+        pits.four,
+        pits.five,
+        pits.six,
+        pits.twelve,
+        pits.eleven,
+        pits.ten,
+        pits.nine,
+        pits.eight,
+        pits.seven,
+        this.store
+    ],
+    side: this.route.slice(6, 13)
+}
 
-const availableToComputer = [
-    pits.one, 
-    pits.two, 
-    pits.three,
-    pits.four,
-    pits.five,
-    pits.six,
-    pits.twelve,
-    pits.eleven,
-    pits.ten,
-    pits.nine,
-    pits.eight,
-    pits.seven,
-    stores.computer,
-]
+/*----- app's state (variables) -----*/
+let scores;
+let playerTurn;
+let computerTurn;
 
-const playerSide = availableToPlayer.slice(0, 6);
-const computerSide = availableToComputer.slice(6, 12);
+/*----- cached element references -----*/
 
 /*----- event listeners -----*/
 const allPits = document.querySelectorAll(".pit");
