@@ -89,13 +89,23 @@ const availableToComputer = [
 const playerSide = availableToPlayer.slice(0, 6);
 const computerSide = availableToComputer.slice(6, 12);
 /*----- event listeners -----*/
-let allPits = document.querySelectorAll(".pit");
+const allPits = document.querySelectorAll(".pit");
 allPits.forEach(function(pit) {
     pit.addEventListener("mouseenter", function() {
         this.style.height = "175px";
     });
     pit.addEventListener("mouseleave", function() {
         this.style.height = "125px";
+    });
+});
+
+const allStores = document.querySelectorAll(".store");
+allStores.forEach(function(store) {
+    store.addEventListener("mouseenter", function() {
+        this.style.width = "175px";
+    });
+    store.addEventListener("mouseleave", function() {
+        this.style.width = "125px";
     });
 });
 
@@ -138,12 +148,12 @@ function render() {
 }
 
 function playerDist(pit) {
-    let stonesinHand = pit.innerText;
+    let stonesInHand = pit.innerText;
     let pitInd = availableToPlayer.indexOf(pit) + 1;
     pit.innerText = 0;
-    while (stonesinHand > 0) {
+    while (stonesInHand > 0) {
         availableToPlayer[pitInd].innerText++;
-        stonesinHand--;
+        stonesInHand--;
         if (pitInd > 12) {
             pitInd = 0;
         }
@@ -162,14 +172,5 @@ function playerDist(pit) {
 
 pits.three.addEventListener("click", playerDist(pits.three));
 
-function advance(player, pit) {
-    let inHand = pit.innerText;
-    while (inHand > 0) {
-
-    }
-    render();
-// player or computer picks up stones and continues collecting and dropping into pits unitl their turn is done
-}
-// returns sum of stores. if 48, then game is over.
 
 

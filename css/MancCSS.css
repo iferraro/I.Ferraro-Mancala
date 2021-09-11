@@ -20,6 +20,18 @@ h1 {
     text-align: center;
     /* background-color: peru; */
 }
+#leftBox, #rightBox {
+    display: flex;
+    width: 195px;
+    height: 290px;
+    /* background-color: deepskyblue; */
+}
+#leftBox {
+    justify-content: flex-end;
+}
+#rightBox {
+    justify-content: flex-start;
+}
 #topRow, #bottomRow {
     display: flex;
     height: 195px;
