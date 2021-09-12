@@ -29,27 +29,33 @@ const pitOpposites = {
     twelve: pits.six
 }
 
-const player = {
-    store: document.querySelector("#playerStore"),
-    route: [
-        pits.one, 
-        pits.two, 
-        pits.three,
-        pits.four,
-        pits.five,
-        pits.six,
-        this.store,
-        pits.twelve,
-        pits.eleven,
-        pits.ten,
-        pits.nine,
-        pits.eight,
-        pits.seven,
-    ],
-    side: this.route.slice(0, 6)
+const stores = {
+    player: document.querySelector("#playerStore"),
+    computer: document.querySelector("#compStore")
 }
+
+const player = {
+    side: [pits.one, pits.two, pits.three, pits.four, pits.five, pits.six],
+    route: [
+        pits.one, 
+        pits.two, 
+        pits.three,
+        pits.four,
+        pits.five,
+        pits.six,
+        stores.player,
+        pits.twelve,
+        pits.eleven,
+        pits.ten,
+        pits.nine,
+        pits.eight,
+        pits.seven,
+    ],
+    turn: false
+}
+ 
 const computer = {
-    store: document.querySelector("#compStore"),
+    side: [pits.twelve, pits.eleven, pits.ten, pits.nine, pits.eight, pits.seven],
     route: [
         pits.one, 
         pits.two, 
@@ -63,9 +69,9 @@ const computer = {
         pits.nine,
         pits.eight,
         pits.seven,
-        this.store
+        stores.computer
     ],
-    side: this.route.slice(6, 13)
+    turn: false
 }
 
 /*----- app's state (variables) -----*/
@@ -123,106 +129,113 @@ function init() {
         pits[pit].style.backgroundColor = "white"; // or theme color of choice
         pits[pit].style.height = "125px";
     }
-    for (let store in stores) {
-        stores[store].style.backgroundColor = "white";
-    }
+    stores.player.style.backgroundColor = "white";
+    stores.computer.style.backgroundColor = "white";
     winner = null;
-    // playerTurn = true;
-    // computerTurn = false;
+    player.turn = true;
+    computer.turn = false;
     render(); 
 }
 
 function render() {
-    // playerSide.forEach(function(pit) {
-    //     if (pit.innerText === 0) {
-    //          computerSide.forEach(function(compPit) {
-    //              stores.computer.innerText += compPit.innerText;
-    //              compPit.innerText = 0;
-    //          });
-    //     }
-    // });
-    // computerSide.forEach(function(pit) {
-    //     if (pit.innerText === 0) {
-    //          gameOver();
-    //     }
-    // });
-    if (stores.player.innerText + stores.computer.innerText === 48) {
-        if (stores.player.innerText > stores.computer.innerText) {
-            winner = "Player";
-        } else if (stores.player.innerText < stores.computer.innerText) {
-            winner = "Computer";
-        } else {
-            winner = "Tie";
+    if (sideCount(player) === 0) {
+        stores.computer.innerText += sideCount(computer);
+        empty(computer);
+        winnerCheck();
+    } else if (sideCount(computer) === 0) {
+        stores.player.innerText += sideCount(player);
+        empty(player);
+        winnerCheck();
+    } else {
+        for (let pit in pits) {
+            if (Number(pits[pit].innerText) === 0) {
+                pits[pit].style.backgroundColor = "darkslategrey"; // or theme color of choice
+                pits[pit].style.height = "125px";
+            }// } else {
+            //     pits[pit].style.backgroundColor = "white"; // or theme color of choice
+            // }
         }
-        // console.log()
+    }
         // playerTurn = false;
         // computerTurn = false;
-    }
-    for (let pit in pits) {
-        if (Number(pits[pit].innerText) === 0) {
-            pits[pit].style.backgroundColor = "darkslategrey"; // or theme color of choice
-            pits[pit].style.height = "125px";
-        } else {
-            pits[pit].style.backgroundColor = "white"; // or theme color of choice
-        }
-    }
 }
 
-// function gameOver() {
-//     if ()
-// }
+function sideCount(user) {
+    let count = 0;
+    user.side.forEach(function(pit) {
+        count += Number(pit.innerText);
+    });
+    return count;
+}
+
+function empty(user) {
+    user.side.forEach(function(pit) {
+        pit.innerText = 0;
+    });
+}
+
+function winnerCheck() {
+    if (stores.player.innerText > stores.computer.innerText) {
+        winner = "Player";
+    } else if (stores.player.innerText < stores.computer.innerText) {
+        winner = "Computer"
+    } else {
+        winner = "Tie";
+    }
+    // display winner in header
+}
 
 // if pit.innerText !== 0, allow player/computer to choose it to go
 
-function playerSow(pit) {
+function sow(user, pit) {
+    for (let p in pits) {
+        pits[p].style.backgroundColor = "white";
+    }
     let stonesInHand = pit.innerText;
-    let pitInd = availableToPlayer.indexOf(pit) + 1;
-    if (pitInd === availableToPlayer.length) {
+    let pitInd = user.route.indexOf(pit) + 1;
+    if (pitInd === user.route.length) {
         pitInd = 0;
     }
     pit.innerText = 0;
     while (stonesInHand > 0) {
-        availableToPlayer[pitInd].innerText++;
+        user.route[pitInd].innerText++;
         stonesInHand--;
         pitInd++;
-        if (pitInd === availableToPlayer.length) {
+        if (pitInd === user.route.length) {
             pitInd = 0;
         }
     } 
-    let finalPit = availableToPlayer[pitInd-1];
-    for (let pit in pits) {
-        if (pits[pit] !== finalPit) {
-            pits[pit].style.height = "125px";
-        }
-    }
-    if (finalPit !== stores.player) {
-        finalPit.style.height = "175px";
-    }
-    if (playerSide.includes(finalPit)) {
+    let finalPit = user.route[pitInd-1];
+    finalPit.style.backgroundColor = "blue";
+    if (user.side.includes(finalPit)) {
         if (Number(finalPit.innerText) === 1) {
-            merge(finalPit, stores.player);
+            merge(finalPit, stores[user]);
+            user.turn = false;
+            opponent.turn = true;
+
+        } else {
+            sow(user,finalPit);
         }
-    } else if (finalPit === stores.player) {
-        playerTurn = true;
+    } else if (finalPit === stores[user]) {
+        // extra turn starting from available pits;
+    } else {
+        user.turn = false;
+        opponent.turn = true;
     }
-    else {
-        playerTurn = false;
-        computerTurn = true;
-    }
-    // other conditions for ending turn
+    // other conditions for ending turn?
     render(); 
 }
 
-function merge(pit, store) {
-    store.innerText += pit.innerText;
+function merge(pit, user) {
+    stores[user].innerText += pit.innerText;
     pit.innerText = 0;
-    store.innerText += pitOpposites[pit].innerText;        
+    stores[user].innerText += pitOpposites[pit].innerText;        
     pitOpposites[pit].innerText = 0;
 }
 
 for (let pit in pits) {
     pits[pit].addEventListener("click", function() {
-        playerSow(this);
+        sow(player, this);
     });
 }
 
