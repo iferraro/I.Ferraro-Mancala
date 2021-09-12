@@ -156,8 +156,6 @@ function render() {
             // }
         }
     }
-        // playerTurn = false;
-        // computerTurn = false;
 }
 
 function sideCount(user) {
@@ -182,48 +180,53 @@ function winnerCheck() {
     } else {
         winner = "Tie";
     }
+    player.turn = false;
+    computer.turn = false;
     // display winner in header
 }
 
+// function combat(evt) {
+//     let playerChoice = evt.target; // player.turn starts out true
+//     if (sow(player, playerChoice) === stores.player) {
+//         combat(evt);
+//     } else if (Number(sow(player, playerChoice).innerText) === 1) {
+//         merge(sow(player, playerChoice), stores.player);
+//         player.turn = false;
+//         computer.turn = true;
+//     }
+//     if (sow(computer, computerChoice()) === stores.computer) {
+//         let secondTurnPit = sow(computer, computerChoice());
+//     }
+
+// }
 // if pit.innerText !== 0, allow player/computer to choose it to go
 
 function sow(user, pit) {
-    for (let p in pits) {
-        pits[p].style.backgroundColor = "white";
-    }
-    let stonesInHand = pit.innerText;
-    let pitInd = user.route.indexOf(pit) + 1;
-    if (pitInd === user.route.length) {
-        pitInd = 0;
-    }
-    pit.innerText = 0;
-    while (stonesInHand > 0) {
-        user.route[pitInd].innerText++;
-        stonesInHand--;
-        pitInd++;
+    if (user.turn === true && user.side.includes(pit)) {
+        for (let p in pits) {
+            pits[p].style.backgroundColor = "white";
+        }
+        for (let s in stores) {
+            stores[s].backgroundColor = "white";
+        }
+        let stonesInHand = pit.innerText;
+        let pitInd = user.route.indexOf(pit) + 1;
         if (pitInd === user.route.length) {
             pitInd = 0;
         }
-    } 
-    let finalPit = user.route[pitInd-1];
-    finalPit.style.backgroundColor = "blue";
-    if (user.side.includes(finalPit)) {
-        if (Number(finalPit.innerText) === 1) {
-            merge(finalPit, stores[user]);
-            user.turn = false;
-            opponent.turn = true;
-
-        } else {
-            sow(user,finalPit);
-        }
-    } else if (finalPit === stores[user]) {
-        // extra turn starting from available pits;
-    } else {
-        user.turn = false;
-        opponent.turn = true;
+        pit.innerText = 0;
+        while (stonesInHand > 0) {
+            user.route[pitInd].innerText++;
+            stonesInHand--;
+            pitInd++;
+            if (pitInd === user.route.length) {
+                pitInd = 0;
+            }
+        } 
+        let finalPit = user.route[pitInd-1];
+        finalPit.style.backgroundColor = "blue";
+        return finalPit;
     }
-    // other conditions for ending turn?
-    render(); 
 }
 
 function merge(pit, user) {
@@ -233,10 +236,15 @@ function merge(pit, user) {
     pitOpposites[pit].innerText = 0;
 }
 
-for (let pit in pits) {
-    pits[pit].addEventListener("click", function() {
-        sow(player, this);
+function computerChoice() {
+    let availablePits = [];
+    computer.side.forEach(function(p) {
+        if (Number(p.innerText) > 0 ) {
+            availablePits.push(p);
+        }
     });
+    choice = availablePits[Math.floor(Math.random()*availablePits.length)];
+    return choice;
 }
 
 
