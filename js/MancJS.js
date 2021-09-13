@@ -116,7 +116,6 @@ resetButton.addEventListener("mouseleave", function() {
 });
 
 /*----- functions -----*/
-init();
 function init() {
     // scores = {
     //     player: 0,
@@ -132,8 +131,8 @@ function init() {
     stores.player.style.backgroundColor = "white";
     stores.computer.style.backgroundColor = "white";
     winner = null;
-    player.turn = true;
-    computer.turn = false;
+    // player.turn = true;
+    // computer.turn = false;
     render(); 
 }
 
@@ -180,53 +179,84 @@ function winnerCheck() {
     } else {
         winner = "Tie";
     }
-    player.turn = false;
-    computer.turn = false;
+    // player.turn = false;
+    // computer.turn = false;
     // display winner in header
 }
 
-// function combat(evt) {
-//     let playerChoice = evt.target; // player.turn starts out true
-//     if (sow(player, playerChoice) === stores.player) {
-//         combat(evt);
-//     } else if (Number(sow(player, playerChoice).innerText) === 1) {
-//         merge(sow(player, playerChoice), stores.player);
-//         player.turn = false;
-//         computer.turn = true;
-//     }
-//     if (sow(computer, computerChoice()) === stores.computer) {
-//         let secondTurnPit = sow(computer, computerChoice());
-//     }
+gameplay();
 
-// }
-// if pit.innerText !== 0, allow player/computer to choose it to go
+function gameplay() {
+    // kickoff function
+    init();
+    player.side.forEach(function(p) {
+        p.addEventListener("click", function() {
+            playerMove(p);
+        });
+    });
+}
+
+function playerMove(pit) {
+    // sow(player, pit);
+    let restP = sow(player, pit);
+    restP.style.backgroundColor = "blue";
+    if (restP === stores.player) {
+        render();
+        return;
+    } else if (Number(restP.innerText) === 1) {
+        merge(restP, stores.player);
+        // player.turn = false;
+        // computer.turn = true;
+        render();
+        computerMove();
+    } else {
+        render();
+        computerMove();
+    }
+}
+
+function computerMove() {
+    let restC = sow(computer, computerChoice());
+    restC.style.backgroundColor = "red";
+    if (restC === stores.computer) {
+        computerMove();
+    } else if (Number(restC.innerText) === 1) {
+        merge(restC, stores.computer);
+        // computer.turn = false;
+        // player.turn = true;
+        render();
+        return;
+    } else {
+        render();
+        // computer.turn = false;
+        // player.turn = true;
+        return;
+    }
+}
 
 function sow(user, pit) {
-    if (user.turn === true && user.side.includes(pit)) {
-        for (let p in pits) {
-            pits[p].style.backgroundColor = "white";
-        }
-        for (let s in stores) {
-            stores[s].backgroundColor = "white";
-        }
-        let stonesInHand = pit.innerText;
-        let pitInd = user.route.indexOf(pit) + 1;
+    for (let p in pits) {
+        pits[p].style.backgroundColor = "white";
+    }
+    for (let s in stores) {
+        stores[s].backgroundColor = "white";
+    }
+    let stonesInHand = pit.innerText;
+    let pitInd = user.route.indexOf(pit) + 1;
+    if (pitInd === user.route.length) {
+        pitInd = 0;
+    }
+    pit.innerText = 0;
+    while (stonesInHand > 0) {
+        user.route[pitInd].innerText++;
+        stonesInHand--;
+        pitInd++;
         if (pitInd === user.route.length) {
             pitInd = 0;
         }
-        pit.innerText = 0;
-        while (stonesInHand > 0) {
-            user.route[pitInd].innerText++;
-            stonesInHand--;
-            pitInd++;
-            if (pitInd === user.route.length) {
-                pitInd = 0;
-            }
-        } 
-        let finalPit = user.route[pitInd-1];
-        finalPit.style.backgroundColor = "blue";
-        return finalPit;
-    }
+    } 
+    let finalPit = user.route[pitInd-1];
+    return finalPit;
 }
 
 function merge(pit, user) {
