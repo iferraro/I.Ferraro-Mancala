@@ -307,6 +307,9 @@ function sow(user, pit) {
         }
     } 
     let finalPit = user.route[pitInd-1];
+    if (pitInd-1 < 0) {
+        finalPit = user.route[user.route.length-1];
+    } // if 0, one backwards is user.route.length
     return finalPit;       
 }
 
@@ -333,7 +336,7 @@ function computerChoice() {
             availablePits.push(p);
         }
     });
-    choice = availablePits[Math.floor(Math.random()*availablePits.length)];
+    let choice = availablePits[Math.floor(Math.random()*availablePits.length)];
     return choice;
 }
 
