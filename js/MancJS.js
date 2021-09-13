@@ -1,17 +1,56 @@
 /*----- constants -----*/
+const PLAYER_THEME = "#A61540";
+const COMPUTER_THEME = "#C39428";
+
 const pits = {
-    one: document.querySelector("#one"),
-    two: document.querySelector("#two"),
-    three: document.querySelector("#three"),
-    four: document.querySelector("#four"),
-    five: document.querySelector("#five"),
-    six: document.querySelector("#six"),
-    seven: document.querySelector("#seven"),
-    eight: document.querySelector("#eight"),
-    nine: document.querySelector("#nine"),
-    ten: document.querySelector("#ten"),
-    eleven: document.querySelector("#eleven"),
-    twelve: document.querySelector("#twelve")
+    one: {
+        self: document.querySelector("#one"),
+        qty: null
+    },
+    two: {
+        self: document.querySelector("#two"),
+        qty: null
+    }, 
+    three: {
+        self: document.querySelector("#three"),
+        qty: null
+    },
+    four: {
+        self: document.querySelector("#four"),
+        qty: null
+    },
+    five: {
+        self: document.querySelector("#five"),
+        qty: null
+    },
+    six: {
+        self: document.querySelector("#six"),
+        qty: null
+    },
+    seven: {
+        self: document.querySelector("#seven"),
+        qty: null
+    },
+    eight: {
+        self: document.querySelector("#eight"),
+        qty: null
+    },
+    nine: {
+        self: document.querySelector("#nine"),
+        qty: null
+    },
+    ten: {
+        self: document.querySelector("#ten"),
+        qty: null
+    },
+    eleven: {
+        self: document.querySelector("#eleven"),
+        qty: null
+    },
+    twelve: {
+        self: document.querySelector("#twelve"),
+        qty: null
+    }
 }
 
 const pitOpposites = {
@@ -30,8 +69,14 @@ const pitOpposites = {
 }
 
 const stores = {
-    player: document.querySelector("#playerStore"),
-    computer: document.querySelector("#compStore")
+    player: {
+        self: document.querySelector("#playerStore"),
+        qty: null
+    },
+    computer: {
+        self: document.querySelector("#compStore"),
+        qty: null
+    }
 }
 
 const player = {
@@ -50,8 +95,7 @@ const player = {
         pits.nine,
         pits.eight,
         pits.seven,
-    ],
-    turn: false
+    ]
 }
  
 const computer = {
@@ -70,19 +114,15 @@ const computer = {
         pits.eight,
         pits.seven,
         stores.computer
-    ],
-    turn: false
+    ]
 }
 
 /*----- app's state (variables) -----*/
 let scores;
-let playerTurn;
-let computerTurn;
-
 /*----- cached element references -----*/
 
 /*----- event listeners -----*/
-const allPits = document.querySelectorAll(".pit");
+// const allPits = document.querySelectorAll(".pit");
 // allPits.forEach(function(pit) {
 //     pit.addEventListener("mouseenter", function() {
 //         this.style.height = "175px";
@@ -117,73 +157,69 @@ resetButton.addEventListener("mouseleave", function() {
 
 /*----- functions -----*/
 function init() {
-    // scores = {
-    //     player: 0,
-    //     computer: 0
-    // }
-    stores.player.innerText = 0;
-    stores.computer.innerText = 0;
-    for (let pit in pits) {
-        pits[pit].innerText = 4;
-        pits[pit].style.backgroundColor = "white"; // or theme color of choice
-        pits[pit].style.height = "125px";
+    for (let store in stores) {
+        stores[store].qty = 0;
     }
-    stores.player.style.backgroundColor = "white";
-    stores.computer.style.backgroundColor = "white";
+    for (let pit in pits) {
+        pits[pit].qty = 4;
+    }
+    colorAndLevel();
+    // scores = {
+    //     player: stores.player.qty,
+    //     computer: stores.computer.qty
+    // }
     winner = null;
-    // player.turn = true;
-    // computer.turn = false;
     render(); 
 }
 
 function render() {
     if (sideCount(player) === 0) {
-        stores.computer.innerText += sideCount(computer);
+        stores.computer.qty += sideCount(computer); // remove event listener from empty pits
         empty(computer);
         winnerCheck();
     } else if (sideCount(computer) === 0) {
-        stores.player.innerText += sideCount(player);
+        stores.player.qty += sideCount(player);
         empty(player);
         winnerCheck();
     } 
-    for (let pit in pits) {
-        if (Number(pits[pit].innerText) === 0) {
-            pits[pit].style.backgroundColor = "darkslategrey"; // or theme color of choice
-            pits[pit].style.height = "125px";
-        }
-    }
-    for (let store in stores) {
-        stores[store].style.backgroundColor = "white";
-    }
+    updateNumbers(); 
 }
 
 function sideCount(user) {
     let count = 0;
     user.side.forEach(function(pit) {
-        count += Number(pit.innerText);
+        count += pit.qty;
     });
     return count;
 }
 
 function empty(user) {
     user.side.forEach(function(pit) {
-        pit.innerText = 0;
+        pit.qty = 0;
     });
 }
 
-function wipeout() {
-    for (let pit in pits) {
-        pits[pit].style.backgroundColor = "white"; // or theme color of choice;
-    }
-    for (let store in stores) {
-        stores[store].style.backgroundColor = "white";
-    }
+function colorAndLevel() {
+    player.side.forEach(function(p) {
+        p.self.style.backgroundColor = PLAYER_THEME;
+        p.self.style.height = "125px";
+    });
+    const playerStore = stores.player;
+    playerStore.self.style.backgroundColor = PLAYER_THEME;
+    playerStore.self.style.width = "125px";
+    computer.side.forEach(function(q) {
+        q.self.style.backgroundColor = COMPUTER_THEME;
+        q.self.style.height = "125px";
+    });
+    const computerStore = stores.computer;
+    computerStore.self.style.backgroundColor = COMPUTER_THEME;
+    computerStore.self.style.width = "125px";
 }
 
 function winnerCheck() {
-    if (stores.player.innerText > stores.computer.innerText) {
+    if (stores.player.qty > stores.computer.qty) {
         winner = "Player";
-    } else if (stores.player.innerText < stores.computer.innerText) {
+    } else if (stores.player.qty < stores.computer.qty) {
         winner = "Computer"
     } else {
         winner = "Tie";
@@ -192,27 +228,39 @@ function winnerCheck() {
     winScreen.innerText = winner;
 }
 
-gameplay();
-
-function gameplay() {
-    init();
-    player.side.forEach(function(p) {
-        p.addEventListener("click", function() {
-            playerMove(p);
-        });
-    });
+function updateNumbers() { // make dependent on each theme?
+    for (let store in stores) {
+        stores[store].self.innerText = stores[store].qty;
+    }
+    for (let pit in pits) {
+        pits[pit].self.innerText = pits[pit].qty;
+        if (pits[pit].qty === 0) {
+            pits[pit].self.style.backgroundColor = "darkslategrey";
+        }
+    }
 }
 
+init();
+player.side.forEach(function(p) {
+    p.self.addEventListener("click", function() {
+        playerMove(p);
+    });
+});
+
 function playerMove(bowl) {
+    if (bowl.qty === 0) {
+        return;
+    }
     let restP = sow(player, bowl);
-    restP.style.backgroundColor = "blue";
+    //render();
+    restP.self.style.backgroundColor = "blue";
     if (restP === stores.player) {
         render();
         return;
     } else if (player.side.includes(restP)) {
-        if (Number(restP.innerText) === 1) {
-            if (pitOpposites[restP].innerText > 0) {
-                merge(restP, stores.player);
+        if (restP.qty === 1) {
+            if (pitOpposites[String(restP.self.id)].qty > 0) {
+                playerMerge(restP);
                 render();
                 computerMove();
             } 
@@ -224,15 +272,15 @@ function playerMove(bowl) {
 
 function computerMove() {
     let restC = sow(computer, computerChoice());
-    restC.style.backgroundColor = "red";
-    console.log(restC.style.backgroundColor);
+    //render();
+    restC.self.style.backgroundColor = "red";
     if (restC === stores.computer) {
         render();
         computerMove();
     } else if (computer.side.includes(restC)) {
-        if (Number(restC.innerText) === 1) {
-            if (pitOpposites[restC].innerText > 0) {
-                merge(restC, stores.computer);
+        if (restC.qty === 1) {
+            if (pitOpposites[String(restC.self.id)].qty > 0) {
+                computerMerge(restC);
                 render();
                 return;
             } 
@@ -243,38 +291,45 @@ function computerMove() {
 }
 
 function sow(user, pit) {
-    if (pit.innerText > 0) {
-        wipeout();
-        let stonesInHand = Number(pit.innerText);
-        let pitInd = user.route.indexOf(pit) + 1;
+    colorAndLevel();
+    let stonesInHand = pit.qty;
+    let pitInd = user.route.indexOf(pit) + 1;
+    if (pitInd === user.route.length) {
+        pitInd = 0;
+    }
+    pit.qty = 0;
+    while (stonesInHand > 0) {
+        user.route[pitInd].qty++;
+        stonesInHand--;
+        pitInd++;
         if (pitInd === user.route.length) {
             pitInd = 0;
         }
-        pit.innerText = 0;
-        while (stonesInHand > 0) {
-            user.route[pitInd].innerText++;
-            stonesInHand--;
-            pitInd++;
-            if (pitInd === user.route.length) {
-                pitInd = 0;
-            }
-        } 
-        let finalPit = user.route[pitInd-1];
-        return finalPit;
-    }
+    } 
+    let finalPit = user.route[pitInd-1];
+    return finalPit;       
 }
 
-function merge(pit, user) {
-    stores[user].innerText += pit.innerText;
-    pit.innerText = 0;
-    stores[user].innerText += pitOpposites[pit].innerText;        
-    pitOpposites[pit].innerText = 0;
+function playerMerge(pit) {
+    stores.player.qty += pit.qty;
+    pit.qty = 0;
+    oppositePit = pitOpposites[String(pit.self.id)];
+    stores.player.qty += oppositePit.qty;
+    oppositePit.qty = 0;
+}
+
+function computerMerge(pit) {
+    stores.computer.qty += pit.qty;
+    pit.qty = 0;
+    oppositePit = pitOpposites[String(pit.self.id)];
+    stores.computer.qty += oppositePit.qty;
+    oppositePit.qty = 0;
 }
 
 function computerChoice() {
     let availablePits = [];
     computer.side.forEach(function(p) {
-        if (Number(p.innerText) > 0 ) {
+        if (p.qty > 0 ) {
             availablePits.push(p);
         }
     });

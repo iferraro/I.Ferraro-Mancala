@@ -1,5 +1,5 @@
 body {
-    /* background-color: #292C5F; */
+    /* background-color: #26517B; */
     background-color: black;
     margin: 0;
     text-align: center;
@@ -13,7 +13,6 @@ h1 {
     margin-bottom: 0;
     /* background-color: brown; */
 }
-
 #gameBoard {
     display: flex;
     justify-content: center;
@@ -42,30 +41,26 @@ h1 {
     align-items: flex-end;
     /* background-color: chartreuse; */
 }
+button {
+    font-size: 30px;
+}
 #topRow button, #compStore {
-    /* background-color: coral; */
+    background-color: #c39428;
 }
 #bottomRow {
     align-items: flex-start;
     /* background-color: darkslategrey; */
 }
 #bottomRow button, #playerStore {
-    /* background-color: darkorange; */
+    background-color: #A61540;
 }
 .store {
     width: 125px;
     height: 270px;
-    background-color: white;
     border: 0;
     border-radius: 30px;
     margin: 10px;
 }
-/* #compStore {
-    background-color: orange;
-}
-#playerStore {
-    background-color: darkblue;
-} */
 .pit {
     width: 125px;
     height: 125px;
