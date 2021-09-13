@@ -154,6 +154,9 @@ function render() {
             //     pits[pit].style.backgroundColor = "white"; // or theme color of choice
             // }
         }
+        for (let store in stores) {
+            stores[store].style.backgroundColor = "white";
+        }
     }
 }
 
@@ -179,15 +182,13 @@ function winnerCheck() {
     } else {
         winner = "Tie";
     }
-    // player.turn = false;
-    // computer.turn = false;
-    // display winner in header
+    const winScreen = document.querySelector("#winnerLine");
+    winScreen.innerText = winner;
 }
 
 gameplay();
 
 function gameplay() {
-    // kickoff function
     init();
     player.side.forEach(function(p) {
         p.addEventListener("click", function() {
@@ -196,67 +197,69 @@ function gameplay() {
     });
 }
 
-function playerMove(pit) {
-    // sow(player, pit);
-    let restP = sow(player, pit);
+function playerMove(bowl) {
+    let restP = sow(player, bowl);
     restP.style.backgroundColor = "blue";
     if (restP === stores.player) {
         render();
         return;
-    } else if (Number(restP.innerText) === 1) {
-        merge(restP, stores.player);
-        // player.turn = false;
-        // computer.turn = true;
-        render();
-        computerMove();
-    } else {
-        render();
-        computerMove();
+    } else if (player.side.includes(restP)) {
+        if (Number(restP.innerText) === 1) {
+            if (pitOpposites[restP].innerText > 0) {
+                merge(restP, stores.player);
+                render();
+                computerMove();
+            } 
+        }
     }
+    render();
+    computerMove();
 }
 
 function computerMove() {
     let restC = sow(computer, computerChoice());
     restC.style.backgroundColor = "red";
     if (restC === stores.computer) {
+        render();
         computerMove();
-    } else if (Number(restC.innerText) === 1) {
-        merge(restC, stores.computer);
-        // computer.turn = false;
-        // player.turn = true;
-        render();
-        return;
-    } else {
-        render();
-        // computer.turn = false;
-        // player.turn = true;
-        return;
+    } else if (computer.side.includes(restC)) {
+        if (Number(restC.innerText) === 1) {
+            if (pitOpposites[restC].innerText > 0) {
+                merge(restC, stores.computer);
+                render();
+                return;
+            } 
+        }
     }
+    render();
+    return;
 }
 
 function sow(user, pit) {
-    for (let p in pits) {
-        pits[p].style.backgroundColor = "white";
-    }
-    for (let s in stores) {
-        stores[s].backgroundColor = "white";
-    }
-    let stonesInHand = pit.innerText;
-    let pitInd = user.route.indexOf(pit) + 1;
-    if (pitInd === user.route.length) {
-        pitInd = 0;
-    }
-    pit.innerText = 0;
-    while (stonesInHand > 0) {
-        user.route[pitInd].innerText++;
-        stonesInHand--;
-        pitInd++;
+    if (pit.innerText > 0) {
+        for (let p in pits) {
+            pits[p].style.backgroundColor = "white";
+        }
+        for (let s in stores) {
+            stores[s].backgroundColor = "white";
+        }
+        let stonesInHand = Number(pit.innerText);
+        let pitInd = user.route.indexOf(pit) + 1;
         if (pitInd === user.route.length) {
             pitInd = 0;
         }
-    } 
-    let finalPit = user.route[pitInd-1];
-    return finalPit;
+        pit.innerText = 0;
+        while (stonesInHand > 0) {
+            user.route[pitInd].innerText++;
+            stonesInHand--;
+            pitInd++;
+            if (pitInd === user.route.length) {
+                pitInd = 0;
+            }
+        } 
+        let finalPit = user.route[pitInd-1];
+        return finalPit;
+    }
 }
 
 function merge(pit, user) {
