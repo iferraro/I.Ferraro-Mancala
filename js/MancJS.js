@@ -145,18 +145,15 @@ function render() {
         stores.player.innerText += sideCount(player);
         empty(player);
         winnerCheck();
-    } else {
-        for (let pit in pits) {
-            if (Number(pits[pit].innerText) === 0) {
-                pits[pit].style.backgroundColor = "darkslategrey"; // or theme color of choice
-                pits[pit].style.height = "125px";
-            }// } else {
-            //     pits[pit].style.backgroundColor = "white"; // or theme color of choice
-            // }
+    } 
+    for (let pit in pits) {
+        if (Number(pits[pit].innerText) === 0) {
+            pits[pit].style.backgroundColor = "darkslategrey"; // or theme color of choice
+            pits[pit].style.height = "125px";
         }
-        for (let store in stores) {
-            stores[store].style.backgroundColor = "white";
-        }
+    }
+    for (let store in stores) {
+        stores[store].style.backgroundColor = "white";
     }
 }
 
@@ -174,6 +171,15 @@ function empty(user) {
     });
 }
 
+function wipeout() {
+    for (let pit in pits) {
+        pits[pit].style.backgroundColor = "white"; // or theme color of choice;
+    }
+    for (let store in stores) {
+        stores[store].style.backgroundColor = "white";
+    }
+}
+
 function winnerCheck() {
     if (stores.player.innerText > stores.computer.innerText) {
         winner = "Player";
@@ -182,7 +188,7 @@ function winnerCheck() {
     } else {
         winner = "Tie";
     }
-    const winScreen = document.querySelector("#winnerLine");
+    const winScreen = document.querySelector("#winnerInd");
     winScreen.innerText = winner;
 }
 
@@ -219,6 +225,7 @@ function playerMove(bowl) {
 function computerMove() {
     let restC = sow(computer, computerChoice());
     restC.style.backgroundColor = "red";
+    console.log(restC.style.backgroundColor);
     if (restC === stores.computer) {
         render();
         computerMove();
@@ -237,12 +244,7 @@ function computerMove() {
 
 function sow(user, pit) {
     if (pit.innerText > 0) {
-        for (let p in pits) {
-            pits[p].style.backgroundColor = "white";
-        }
-        for (let s in stores) {
-            stores[s].backgroundColor = "white";
-        }
+        wipeout();
         let stonesInHand = Number(pit.innerText);
         let pitInd = user.route.indexOf(pit) + 1;
         if (pitInd === user.route.length) {
