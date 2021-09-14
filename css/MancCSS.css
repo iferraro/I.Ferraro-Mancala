@@ -60,14 +60,17 @@ button {
     border: 0;
     border-radius: 30px;
     margin: 10px;
+    transition: 1.5s;
+    transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 .pit {
     width: 125px;
     height: 125px;
-    background-color: white;
     border: 0;
     border-radius: 30px;
     margin: 10px;
+    transition: 1.5s;
+    transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 #winnerLine {
     height: 80px;
@@ -98,5 +101,7 @@ button {
     border-radius: 50vh;
     text-align: center;
     background-color: white;
+    transition: 1.5s;
+    transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 

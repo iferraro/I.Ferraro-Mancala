@@ -124,26 +124,18 @@ let scores;
 const winScreen = document.querySelector("#winnerInd");
 
 /*----- event listeners -----*/
-// const allPits = document.querySelectorAll(".pit");
-// allPits.forEach(function(pit) {
-//     pit.addEventListener("mouseenter", function() {
-//         this.style.height = "175px";
-//     });
-//     pit.addEventListener("mouseleave", function() {
-//         this.style.height = "125px";
-//     });
-// });
 
-const allStores = document.querySelectorAll(".store");
-allStores.forEach(function(store) {
-    store.addEventListener("mouseenter", function() {
-        this.style.width = "175px";
-    });
-    store.addEventListener("mouseleave", function() {
-        this.style.width = "125px";
-    });
+// expand player store box
+
+stores.player.self.addEventListener("mouseenter", function() {
+    this.style.width = "175px";
 });
+stores.player.self.addEventListener("mouseleave", function() {
+    this.style.width = "125px";
+});   
 
+
+// expand reset button
 const resetButton = document.querySelector("#reset");
 resetButton.addEventListener("click", function() {
     init();
@@ -157,7 +149,23 @@ resetButton.addEventListener("mouseleave", function() {
     this.style.height = "60px";
 });
 
+// player side functions
+player.side.forEach(function(p) {
+    p.self.addEventListener("click", function() {
+        playerMove(p);
+    });
+    p.self.addEventListener("mouseenter", function() {
+        if (p.qty > 0) {
+            this.style.height = "175px";
+        }
+    });
+    p.self.addEventListener("mouseleave", function() {
+        this.style.height = "125px";
+    });
+});
+
 /*----- functions -----*/
+init();
 function init() {
     for (let store in stores) {
         stores[store].qty = 0;
@@ -166,6 +174,7 @@ function init() {
         pits[pit].qty = 4;
     }
     colorAndLevel();
+    // extend();
     winScreen.innerText = "";
     // scores = {
     //     player: stores.player.qty,
@@ -230,24 +239,17 @@ function winnerCheck() {
     winScreen.innerText = winner;
 }
 
-function updateNumbers() { // make dependent on each theme?
+function updateNumbers() { 
     for (let store in stores) {
         stores[store].self.innerText = stores[store].qty;
     }
     for (let pit in pits) {
         pits[pit].self.innerText = pits[pit].qty;
         if (pits[pit].qty === 0) {
-            pits[pit].self.style.backgroundColor = "darkslategrey";
+            pits[pit].self.style.backgroundColor = "darkslategrey"; // make dependent on each theme?
         }
     }
 }
-
-init();
-player.side.forEach(function(p) {
-    p.self.addEventListener("click", function() {
-        playerMove(p);
-    });
-});
 
 function playerMove(bowl) {
     if (bowl.qty === 0) {
@@ -263,11 +265,13 @@ function playerMove(bowl) {
             if (pitOpposites[String(restP.self.id)].qty > 0) {
                 playerMerge(restP);
                 render();
+                // setTimeout
                 computerMove();
             } 
         }
     }
     render();
+    // setTimeout
     computerMove();
 }
 
@@ -300,7 +304,12 @@ function sow(user, pit) {
     pit.qty = 0;
     while (stonesInHand > 0) {
         user.route[pitInd].qty++;
+        // if pit is a pit.../if store...use getAttribute?
+        //expand
+        expand(pit);
         stonesInHand--;
+        // close & wait
+        close(pit);
         pitInd++;
         if (pitInd === user.route.length) {
             pitInd = 0;
@@ -338,6 +347,31 @@ function computerChoice() {
     });
     let choice = availablePits[Math.floor(Math.random()*availablePits.length)];
     return choice;
+}
+
+function expand(p) {
+    for (let pit in pits) {
+        if (pit === p) {
+            p.self.style.height = "175px";
+        }
+    }
+    for (let store in stores) {
+        if (store === p) {
+            p.self.style.width = "175px";
+        }
+    }
+}
+function close(p) {
+    for (let pit in pits) {
+        if (pit === p) {
+            p.self.style.height = "125px";
+        }
+    }
+    for (let store in stores) {
+        if (store === p) {
+            p.self.style.width = "125px";
+        }
+    }
 }
 
 
