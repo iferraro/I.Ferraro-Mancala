@@ -119,7 +119,9 @@ const computer = {
 
 /*----- app's state (variables) -----*/
 let scores;
+
 /*----- cached element references -----*/
+const winScreen = document.querySelector("#winnerInd");
 
 /*----- event listeners -----*/
 // const allPits = document.querySelectorAll(".pit");
@@ -164,6 +166,7 @@ function init() {
         pits[pit].qty = 4;
     }
     colorAndLevel();
+    winScreen.innerText = "";
     // scores = {
     //     player: stores.player.qty,
     //     computer: stores.computer.qty
@@ -174,7 +177,7 @@ function init() {
 
 function render() {
     if (sideCount(player) === 0) {
-        stores.computer.qty += sideCount(computer); // remove event listener from empty pits
+        stores.computer.qty += sideCount(computer); 
         empty(computer);
         winnerCheck();
     } else if (sideCount(computer) === 0) {
@@ -224,7 +227,6 @@ function winnerCheck() {
     } else {
         winner = "Tie";
     }
-    const winScreen = document.querySelector("#winnerInd");
     winScreen.innerText = winner;
 }
 
@@ -252,7 +254,6 @@ function playerMove(bowl) {
         return;
     }
     let restP = sow(player, bowl);
-    //render();
     restP.self.style.backgroundColor = "blue";
     if (restP === stores.player) {
         render();
@@ -272,7 +273,6 @@ function playerMove(bowl) {
 
 function computerMove() {
     let restC = sow(computer, computerChoice());
-    //render();
     restC.self.style.backgroundColor = "red";
     if (restC === stores.computer) {
         render();
@@ -309,7 +309,7 @@ function sow(user, pit) {
     let finalPit = user.route[pitInd-1];
     if (pitInd-1 < 0) {
         finalPit = user.route[user.route.length-1];
-    } // if 0, one backwards is user.route.length
+    }
     return finalPit;       
 }
 
