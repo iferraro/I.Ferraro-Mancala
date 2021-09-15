@@ -1,6 +1,7 @@
 /*----- constants -----*/
-const PLAYER_THEME = "#A61540";
-const COMPUTER_THEME = "#C39428";
+const PLAYER_THEME = "#A61540"; // change color in final
+const COMPUTER_THEME = "#C39428"; // change color in final
+const ZERO_THEME = "darkslategrey"; // change color in final
 
 const pits = {
     one: {
@@ -174,7 +175,6 @@ function init() {
         pits[pit].qty = 4;
     }
     colorAndLevel();
-    // extend();
     winScreen.innerText = "";
     // scores = {
     //     player: stores.player.qty,
@@ -216,16 +216,18 @@ function colorAndLevel() {
         p.self.style.backgroundColor = PLAYER_THEME;
         p.self.style.height = "125px";
     });
-    const playerStore = stores.player;
-    playerStore.self.style.backgroundColor = PLAYER_THEME;
-    playerStore.self.style.width = "125px";
+    const playerStoreEl = stores.player.self;
+    playerStoreEl.style.backgroundColor = PLAYER_THEME;
+    playerStoreEl.style.width = "125px";
+    playerStoreEl.style.height = "270px";
     computer.side.forEach(function(q) {
         q.self.style.backgroundColor = COMPUTER_THEME;
         q.self.style.height = "125px";
     });
-    const computerStore = stores.computer;
-    computerStore.self.style.backgroundColor = COMPUTER_THEME;
-    computerStore.self.style.width = "125px";
+    const computerStoreEl = stores.computer.self;
+    computerStoreEl.style.backgroundColor = COMPUTER_THEME;
+    computerStoreEl.style.width = "125px";
+    computerStoreEl.style.height = "270px";
 }
 
 function winnerCheck() {
@@ -246,7 +248,7 @@ function updateNumbers() {
     for (let pit in pits) {
         pits[pit].self.innerText = pits[pit].qty;
         if (pits[pit].qty === 0) {
-            pits[pit].self.style.backgroundColor = "darkslategrey"; // make dependent on each theme?
+            pits[pit].self.style.backgroundColor = ZERO_THEME;
         }
     }
 }
@@ -256,7 +258,7 @@ function playerMove(bowl) {
         return;
     }
     let restP = sow(player, bowl);
-    restP.self.style.backgroundColor = "blue";
+    restP.self.style.backgroundColor = "blue"; // change to theme second turn color
     if (restP === stores.player) {
         render();
         return;
@@ -265,22 +267,26 @@ function playerMove(bowl) {
             if (pitOpposites[String(restP.self.id)].qty > 0) {
                 playerMerge(restP);
                 render();
-                // setTimeout
-                computerMove();
+                setTimeout(function() {
+                    computerMove();
+                }, 2000);
             } 
         }
     }
     render();
-    // setTimeout
-    computerMove();
+    setTimeout(function() {
+        computerMove();
+    }, 2000);
 }
 
 function computerMove() {
     let restC = sow(computer, computerChoice());
-    restC.self.style.backgroundColor = "red";
+    restC.self.style.backgroundColor = "red"; // change to theme second turn color
     if (restC === stores.computer) {
         render();
-        computerMove();
+        setTimeout(function() {
+            computerMove();
+        }, 1000);
     } else if (computer.side.includes(restC)) {
         if (restC.qty === 1) {
             if (pitOpposites[String(restC.self.id)].qty > 0) {
@@ -303,23 +309,38 @@ function sow(user, pit) {
     }
     pit.qty = 0;
     while (stonesInHand > 0) {
-        user.route[pitInd].qty++;
-        // if pit is a pit.../if store...use getAttribute?
-        //expand
-        expand(pit);
+        let subPit = user.route[pitInd];
+        subPit.qty++;
+        if (subPit.self.style.height === "125px") { // if dropped into a pit 
+            pitApex(subPit);
+        } else { // if dropped into a store
+            storeApex(subPit);
+        }
         stonesInHand--;
-        // close & wait
-        close(pit);
         pitInd++;
         if (pitInd === user.route.length) {
             pitInd = 0;
-        }
+        }      
     } 
     let finalPit = user.route[pitInd-1];
     if (pitInd-1 < 0) {
         finalPit = user.route[user.route.length-1];
     }
     return finalPit;       
+}
+
+function pitApex(p) {
+    p.self.style.height = "175px"; // expand
+    // setTimeout(function() {
+    p.self.style.height = "125px"; // close
+    // }, 1000);
+}
+
+function storeApex(s) {
+    s.self.style.width = "175px"; // expand
+    // setTimeout(function() {
+    s.self.style.width = "125px"; // close
+    // }, 1000);
 }
 
 function playerMerge(pit) {
@@ -348,32 +369,4 @@ function computerChoice() {
     let choice = availablePits[Math.floor(Math.random()*availablePits.length)];
     return choice;
 }
-
-function expand(p) {
-    for (let pit in pits) {
-        if (pit === p) {
-            p.self.style.height = "175px";
-        }
-    }
-    for (let store in stores) {
-        if (store === p) {
-            p.self.style.width = "175px";
-        }
-    }
-}
-function close(p) {
-    for (let pit in pits) {
-        if (pit === p) {
-            p.self.style.height = "125px";
-        }
-    }
-    for (let store in stores) {
-        if (store === p) {
-            p.self.style.width = "125px";
-        }
-    }
-}
-
-
-
 
