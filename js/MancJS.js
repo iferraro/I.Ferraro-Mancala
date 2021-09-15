@@ -173,8 +173,6 @@ function init() {
     //     computer: stores.computer.qty
     // }
     winner = null;
-    // playerTurn = true;
-    // computerTurn = false;
     render(); 
 }
 
@@ -232,8 +230,8 @@ function winnerCheck() {
     } else {
         winner = "Tie";
     }
-    // playerTurn = false;
-    // computerTurn = false;
+    playerTurn = false;
+    computerTurn = false;
     winScreen.innerText = winner;
 }
 
@@ -250,24 +248,21 @@ function updateNumbers() {
 }
 
 function playerMove(bowl) {  // prevent user clicks at wrong time
-    // if playerTurn = true {}
     if (bowl.qty === 0) {
         return;
     }
-    // playerTurn = false;
+    disablePlayer();
     let restP = sow(player, bowl);
     restP.self.style.backgroundColor = "blue"; // change to theme second turn color
     if (restP === stores.player) {
         render();
-        // playerTurn = true;
+        enablePlayer();
         return;
     } else if (player.side.includes(restP)) {
         if (restP.qty === 1) {
             if (pitOpposites[String(restP.self.id)].qty > 0) {
                 playerMerge(restP);
                 render();
-                // playerTurn = false?
-                // computerTurn = true;
                 setTimeout(function() {
                     computerMove();
                 }, 2000);
@@ -275,17 +270,28 @@ function playerMove(bowl) {  // prevent user clicks at wrong time
         }
     }
     render();
-    // playerTurn = false?
-    // computerTurn = true;
     setTimeout(function() {
         computerMove();
     }, 2000);
 }
 
+function enablePlayer() {
+    player.side.forEach(function(p) {
+        p.self.disabled = false;
+    });
+}
+
+function disablePlayer() {
+    player.side.forEach(function(p) {
+        p.self.disabled = true;
+    });
+}
+
 function computerMove() {
-    // if computerTurn === true? {}
+    disablePlayer();
     let restC = sow(computer, computerChoice());
     restC.self.style.backgroundColor = "red"; // change to theme second turn color
+    // restC.self.style.backgroundColor = COMPUTER_THEME;
     if (restC === stores.computer) {
         render();
         setTimeout(function() {
@@ -296,15 +302,17 @@ function computerMove() {
             if (pitOpposites[String(restC.self.id)].qty > 0) {
                 computerMerge(restC);
                 render();
-                // computerTurn = false?
-                // playerTurn = true?
+                setTimeout(function() {
+                    enablePlayer();
+                }, 2000);
                 return;
             } 
         }
     }
     render();
-    // computerTurn = false?
-    // playerTurn = true?
+    setTimeout(function() {
+        enablePlayer();
+    }, 2000);
     return;
 }
 
@@ -324,24 +332,24 @@ function sow(user, pit) {
     let stonesInHand = pit.qty;
     let pitInd = user.route.indexOf(pit) + 1;
     pit.qty = 0;
-    for (let m = 1; stonesInHand > 0; m++) {
-        let x = 200;
-        let b = 200;
+    const m = 100; 
+    const b = 1100;
+    for (let x = 1; stonesInHand > 0; x++) {
         let subPit = user.route[pitInd];
         subPit.qty++;
-        if (subPit.self.classList.item(0) === "pit") { // if dropped into a pit 
+        if (subPit.self.classList.item(0) === "pit") {
             setTimeout(function() {
-                subPit.self.style.height = "175px"; // expand
+                subPit.self.style.height = "175px"; 
             }, m*x); 
             setTimeout(function() {
-                subPit.self.style.height = "125px"; // close
+                subPit.self.style.height = "125px"; 
             }, m*x + b);   
-        } else { // if dropped into a store
+        } else { 
             setTimeout(function() {
-                subPit.self.style.width = "175px"; // expand
+                subPit.self.style.width = "175px"; 
             }, m*x);
             setTimeout(function() {
-                subPit.self.style.width = "125px"; // close
+                subPit.self.style.width = "125px"; 
             }, m*x + b);
         }
         stonesInHand--;
