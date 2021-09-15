@@ -120,6 +120,8 @@ const computer = {
 
 /*----- app's state (variables) -----*/
 let scores;
+let playerTurn;
+let computerTurn;
 
 /*----- cached element references -----*/
 const winScreen = document.querySelector("#winnerInd");
@@ -128,12 +130,12 @@ const winScreen = document.querySelector("#winnerInd");
 
 // expand player store box
 
-stores.player.self.addEventListener("mouseenter", function() {
-    this.style.width = "175px";
-});
-stores.player.self.addEventListener("mouseleave", function() {
-    this.style.width = "125px";
-});   
+// stores.player.self.addEventListener("mouseenter", function() {
+//     this.style.width = "175px";
+// });
+// stores.player.self.addEventListener("mouseleave", function() {
+//     this.style.width = "125px";
+// });   
 
 
 // expand reset button
@@ -181,6 +183,8 @@ function init() {
     //     computer: stores.computer.qty
     // }
     winner = null;
+    // playerTurn = true;
+    // computerTurn = false;
     render(); 
 }
 
@@ -238,6 +242,8 @@ function winnerCheck() {
     } else {
         winner = "Tie";
     }
+    // playerTurn = false;
+    // computerTurn = false;
     winScreen.innerText = winner;
 }
 
@@ -253,20 +259,25 @@ function updateNumbers() {
     }
 }
 
-function playerMove(bowl) {
+function playerMove(bowl) {  // prevent user clicks at wrong time
+    // if playerTurn = true {}
     if (bowl.qty === 0) {
         return;
     }
+    // playerTurn = false;
     let restP = sow(player, bowl);
     restP.self.style.backgroundColor = "blue"; // change to theme second turn color
     if (restP === stores.player) {
         render();
+        // playerTurn = true;
         return;
     } else if (player.side.includes(restP)) {
         if (restP.qty === 1) {
             if (pitOpposites[String(restP.self.id)].qty > 0) {
                 playerMerge(restP);
                 render();
+                // playerTurn = false?
+                // computerTurn = true;
                 setTimeout(function() {
                     computerMove();
                 }, 2000);
@@ -274,12 +285,15 @@ function playerMove(bowl) {
         }
     }
     render();
+    // playerTurn = false?
+    // computerTurn = true;
     setTimeout(function() {
         computerMove();
     }, 2000);
 }
 
 function computerMove() {
+    // if computerTurn === true? {}
     let restC = sow(computer, computerChoice());
     restC.self.style.backgroundColor = "red"; // change to theme second turn color
     if (restC === stores.computer) {
@@ -292,36 +306,80 @@ function computerMove() {
             if (pitOpposites[String(restC.self.id)].qty > 0) {
                 computerMerge(restC);
                 render();
+                // computerTurn = false?
+                // playerTurn = true?
                 return;
             } 
         }
     }
     render();
+    // computerTurn = false?
+    // playerTurn = true?
     return;
+}
+
+function computerChoice() {
+    let availablePits = [];
+    computer.side.forEach(function(p) {
+        if (p.qty > 0 ) {
+            availablePits.push(p);
+        }
+    });
+    let choice = availablePits[Math.floor(Math.random()*availablePits.length)];
+    return choice;
 }
 
 function sow(user, pit) {
     colorAndLevel();
     let stonesInHand = pit.qty;
     let pitInd = user.route.indexOf(pit) + 1;
-    if (pitInd === user.route.length) {
-        pitInd = 0;
-    }
     pit.qty = 0;
-    while (stonesInHand > 0) {
+    for (let m = 1; stonesInHand > 0; m++) {
+        let x = 200;
+        let b = 200;
         let subPit = user.route[pitInd];
         subPit.qty++;
-        if (subPit.self.style.height === "125px") { // if dropped into a pit 
-            pitApex(subPit);
+        if (subPit.self.classList.item(0) === "pit") { // if dropped into a pit 
+            setTimeout(function() {
+                subPit.self.style.height = "175px"; // expand
+            }, m*x); 
+            setTimeout(function() {
+                subPit.self.style.height = "125px"; // close
+            }, m*x + b);   
         } else { // if dropped into a store
-            storeApex(subPit);
+            setTimeout(function() {
+                subPit.self.style.width = "175px"; // expand
+            }, m*x);
+            setTimeout(function() {
+                subPit.self.style.width = "125px"; // close
+            }, m*x + b);
         }
         stonesInHand--;
         pitInd++;
         if (pitInd === user.route.length) {
             pitInd = 0;
         }      
-    } 
+    }
+    // let pitInd = user.route.indexOf(pit) + 1;
+    // if (pitInd === user.route.length) {
+    //     pitInd = 0;
+    // }
+    // pit.qty = 0;
+    // while (stonesInHand > 0) {
+    //     let subPit = user.route[pitInd];
+    //     subPit.qty++;
+    //     if (subPit.self.classList.item(0) === "pit") { // if dropped into a pit 
+    //         pitApex(subPit);
+    //     } else { // if dropped into a store
+    //         storeApex(subPit);
+    //     }
+    //     stonesInHand--;
+    //     pitInd++;
+    //     if (pitInd === user.route.length) {
+    //         pitInd = 0;
+    //     }      
+    // } 
+
     let finalPit = user.route[pitInd-1];
     if (pitInd-1 < 0) {
         finalPit = user.route[user.route.length-1];
@@ -330,17 +388,11 @@ function sow(user, pit) {
 }
 
 function pitApex(p) {
-    p.self.style.height = "175px"; // expand
-    // setTimeout(function() {
-    p.self.style.height = "125px"; // close
-    // }, 1000);
+    
 }
 
 function storeApex(s) {
-    s.self.style.width = "175px"; // expand
-    // setTimeout(function() {
-    s.self.style.width = "125px"; // close
-    // }, 1000);
+    
 }
 
 function playerMerge(pit) {
@@ -359,14 +411,5 @@ function computerMerge(pit) {
     oppositePit.qty = 0;
 }
 
-function computerChoice() {
-    let availablePits = [];
-    computer.side.forEach(function(p) {
-        if (p.qty > 0 ) {
-            availablePits.push(p);
-        }
-    });
-    let choice = availablePits[Math.floor(Math.random()*availablePits.length)];
-    return choice;
-}
+
 
