@@ -128,16 +128,6 @@ const winScreen = document.querySelector("#winnerInd");
 
 /*----- event listeners -----*/
 
-// expand player store box
-
-// stores.player.self.addEventListener("mouseenter", function() {
-//     this.style.width = "175px";
-// });
-// stores.player.self.addEventListener("mouseleave", function() {
-//     this.style.width = "125px";
-// });   
-
-
 // expand reset button
 const resetButton = document.querySelector("#reset");
 resetButton.addEventListener("click", function() {
@@ -360,39 +350,11 @@ function sow(user, pit) {
             pitInd = 0;
         }      
     }
-    // let pitInd = user.route.indexOf(pit) + 1;
-    // if (pitInd === user.route.length) {
-    //     pitInd = 0;
-    // }
-    // pit.qty = 0;
-    // while (stonesInHand > 0) {
-    //     let subPit = user.route[pitInd];
-    //     subPit.qty++;
-    //     if (subPit.self.classList.item(0) === "pit") { // if dropped into a pit 
-    //         pitApex(subPit);
-    //     } else { // if dropped into a store
-    //         storeApex(subPit);
-    //     }
-    //     stonesInHand--;
-    //     pitInd++;
-    //     if (pitInd === user.route.length) {
-    //         pitInd = 0;
-    //     }      
-    // } 
-
     let finalPit = user.route[pitInd-1];
     if (pitInd-1 < 0) {
         finalPit = user.route[user.route.length-1];
     }
     return finalPit;       
-}
-
-function pitApex(p) {
-    
-}
-
-function storeApex(s) {
-    
 }
 
 function playerMerge(pit) {
