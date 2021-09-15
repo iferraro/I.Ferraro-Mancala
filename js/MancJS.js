@@ -1,7 +1,7 @@
-/*----- constants -----*/
-const PLAYER_THEME = "#A61540"; // change color in final
-const COMPUTER_THEME = "#C39428"; // change color in final
-const ZERO_THEME = "darkslategrey"; // change color in final
+const PLAYER_THEME = "#EBBB10"; 
+const COMPUTER_THEME = "#22B6E3"; 
+const ZERO_THEME = "#659E83";
+const SECOND_TURN_THEME = "#1FED1F";
 
 const pits = {
     one: {
@@ -118,17 +118,9 @@ const computer = {
     ]
 }
 
-/*----- app's state (variables) -----*/
-let scores;
-let playerTurn;
-let computerTurn;
+const playerStripe = document.querySelector("#rightInd");
+const computerStripe = document.querySelector("#leftInd");
 
-/*----- cached element references -----*/
-const winScreen = document.querySelector("#winnerInd");
-
-/*----- event listeners -----*/
-
-// expand reset button
 const resetButton = document.querySelector("#reset");
 resetButton.addEventListener("click", function() {
     init();
@@ -142,7 +134,6 @@ resetButton.addEventListener("mouseleave", function() {
     this.style.height = "60px";
 });
 
-// player side functions
 player.side.forEach(function(p) {
     p.self.addEventListener("click", function() {
         playerMove(p);
@@ -157,7 +148,6 @@ player.side.forEach(function(p) {
     });
 });
 
-/*----- functions -----*/
 init();
 function init() {
     for (let store in stores) {
@@ -167,12 +157,8 @@ function init() {
         pits[pit].qty = 4;
     }
     colorAndLevel();
-    winScreen.innerText = "";
-    // scores = {
-    //     player: stores.player.qty,
-    //     computer: stores.computer.qty
-    // }
-    winner = null;
+    playerStripe.style.backgroundColor = "#244535";
+    computerStripe.style.backgroundColor = "#244535";
     render(); 
 }
 
@@ -224,15 +210,13 @@ function colorAndLevel() {
 
 function winnerCheck() {
     if (stores.player.qty > stores.computer.qty) {
-        winner = "Player";
+        playerStripe.style.backgroundColor = PLAYER_THEME;
     } else if (stores.player.qty < stores.computer.qty) {
-        winner = "Computer"
+        computerStripe.style.backgroundColor = COMPUTER_THEME;
     } else {
-        winner = "Tie";
+        playerStripe.style.backgroundColor = ZERO_THEME;
+        computerStripe.style.backgroundColor = ZERO_THEME;
     }
-    playerTurn = false;
-    computerTurn = false;
-    winScreen.innerText = winner;
 }
 
 function updateNumbers() { 
@@ -247,14 +231,14 @@ function updateNumbers() {
     }
 }
 
-function playerMove(bowl) {  // prevent user clicks at wrong time
+function playerMove(bowl) { 
     if (bowl.qty === 0) {
         return;
     }
     disablePlayer();
     let restP = sow(player, bowl);
-    restP.self.style.backgroundColor = "blue"; // change to theme second turn color
     if (restP === stores.player) {
+        restP.self.style.backgroundColor = SECOND_TURN_THEME;
         render();
         enablePlayer();
         return;
@@ -265,14 +249,14 @@ function playerMove(bowl) {  // prevent user clicks at wrong time
                 render();
                 setTimeout(function() {
                     computerMove();
-                }, 2000);
+                }, 3000);
             } 
         }
     }
     render();
     setTimeout(function() {
         computerMove();
-    }, 2000);
+    }, 3000);
 }
 
 function enablePlayer() {
@@ -290,9 +274,8 @@ function disablePlayer() {
 function computerMove() {
     disablePlayer();
     let restC = sow(computer, computerChoice());
-    restC.self.style.backgroundColor = "red"; // change to theme second turn color
-    // restC.self.style.backgroundColor = COMPUTER_THEME;
     if (restC === stores.computer) {
+        restC.self.style.backgroundColor = SECOND_TURN_THEME;
         render();
         setTimeout(function() {
             computerMove();

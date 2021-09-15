@@ -1,17 +1,16 @@
 body {
-    /* background-color: #26517B; */
-    background-color: black;
+    background-color: #244535;
     margin: 0;
     text-align: center;
 }
 header {
     text-align: center;
-    color: white;
+    color: #FFFD8A;
+    font-family: 'Suez One', serif;
 }
 h1 {
-    font-size: 100px;
+    font-size: 110px;
     margin-bottom: 0;
-    /* background-color: brown; */
 }
 #gameBoard {
     display: flex;
@@ -19,13 +18,21 @@ h1 {
     align-items: center;
     margin-top: 0;
     text-align: center;
-    /* background-color: peru; */
+}
+.ind {
+    width: 60px;
+    height: 270px;
+    border-radius: 50vw;
+    margin: 10px;
+    transition: 1s cubic-bezier(.81,.29,.06,.94);
+}
+#leftInd, #rightInd {
+    background-color: #244535;
 }
 #leftBox, #rightBox {
     display: flex;
     width: 195px;
     height: 290px;
-    /* background-color: deepskyblue; */
 }
 #leftBox {
     justify-content: flex-end;
@@ -39,20 +46,17 @@ h1 {
 }
 #topRow {
     align-items: flex-end;
-    /* background-color: chartreuse; */
 }
 button {
-    font-size: 30px;
+    font-size: 40px;
+    font-family: 'Suez One', serif;
+    color: #244535;
 }
-#topRow button, #compStore {
-    background-color: #c39428;
+#topRow button, #compStore, #bottomRow button, #playerStore {
+    background-color: #244535;
 }
 #bottomRow {
     align-items: flex-start;
-    /* background-color: darkslategrey; */
-}
-#bottomRow button, #playerStore {
-    background-color: #A61540;
 }
 .store {
     width: 125px;
@@ -70,27 +74,12 @@ button {
     margin: 10px;
     transition: 1s cubic-bezier(.81,.29,.06,.94);
 }
-#winnerLine {
-    height: 80px;
-    margin-bottom: 0;
-    margin-top: 0;
-    /* background-color: burlywood; */
-}
-#winnerInd {
-    width: 270px;
-    height: 60px;
-    border: 0;
-    border-radius: 50vh;
-    text-align: center;
-    background-color: white;
-}
 #footer {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 80px;
-    margin-top: 0;
-    /* background-color: darkolivegreen; */
+    margin-top: 20px;
 }
 #reset {
     width: 270px;
@@ -98,7 +87,8 @@ button {
     border: 0;
     border-radius: 50vh;
     text-align: center;
-    background-color: white;
+    font-size: 35px;
+    background-color: #FFFD8A;
     transition: 1s cubic-bezier(.81,.29,.06,.94);
 }
 
