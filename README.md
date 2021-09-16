@@ -15,7 +15,7 @@ I produced all of the HTML, CSS, and JavaScript in Visual Studio Code. Testing a
 - If any of the players' last stone dropped is the only one in a pit on their side, and there is at least one in the pit directly opposite, then they will collect that one stone along with however many are in the opposite pit, and put them in their mancala.
 - The game ends when one of the players' rows is empty. Once this happens, the opponent collects all of the stones in their row and places them in their mancala. Whoever has the most stones wins.
 ## Next Steps
-- I believe that there could be some more precision in the timing of the "wave" motion. Ideally, once a stone is added to a pit, the number would increase by one, the pit would expand, shrink, and then the next one in the path would expand and repeat the same motion.
+- I believe there could be more precision in the timing of the "wave" motion. Ideally, once a stone is added to a pit, the number would increase by one, the pit would expand, shrink, and then the next one in the path would expand and repeat the same motion.
 - Additionally, I could change the CSS element units from pixels to percentages for the gameboard to be more responsive. 
 ## Sources
 https://www.savannahafricanartmuseum.org/2020-workshops/05-2
