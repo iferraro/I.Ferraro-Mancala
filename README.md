@@ -6,4 +6,4 @@ Mancala is a turn-based board game that has existed since before the first centu
 ![Game board at start](https://i.imgur.com/HhfyApD.png)
 ![During gameplay](https://i.imgur.com/RNbVVY5.png)
 ## Technologies Used
-I produced all of the HTML, CSS, and JavaScript in the Visual Studio Code editor. Testing and debugging were done in Microsoft Edge. 
+I produced all of the HTML, CSS, and JavaScript in Visual Studio Code. Testing and debugging were done in Microsoft Edge. 
