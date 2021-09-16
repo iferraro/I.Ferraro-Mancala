@@ -157,8 +157,9 @@ function init() {
         pits[pit].qty = 4;
     }
     colorAndLevel();
-    playerStripe.style.backgroundColor = "#244535";
-    computerStripe.style.backgroundColor = "#244535";
+    playerStripe.style.backgroundColor = "#0E1F17";
+    computerStripe.style.backgroundColor = "#0E1F17";
+    enablePlayer();
     render(); 
 }
 
@@ -316,7 +317,7 @@ function sow(user, pit) {
     let pitInd = user.route.indexOf(pit) + 1;
     pit.qty = 0;
     const m = 100; 
-    const b = 1100;
+    const b = 900;
     for (let x = 1; stonesInHand > 0; x++) {
         let subPit = user.route[pitInd];
         subPit.qty++;
