@@ -17,3 +17,5 @@ I produced all of the HTML, CSS, and JavaScript in Visual Studio Code. Testing a
 ## Next Steps
 - I believe that there could be some more precision in the timing of the "wave" motion. Ideally, once a stone is added to a pit, the number would increase by one, the pit would expand, shrink, and then the next one in the path would expand and repeat the same motion.
 - Additionally, I could change the CSS element units from pixels to percentages for the gameboard to be more responsive. 
+## Sources
+https://www.savannahafricanartmuseum.org/2020-workshops/05-2
